@@ -1,4 +1,6 @@
 from flask import Blueprint
+from app.routes.webhook import webhook_bp
+
 
 health_bp = Blueprint("health", __name__)
 
