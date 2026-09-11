@@ -5,6 +5,7 @@ from app.services.conversation_service import (
     get_or_create_conversation,
     save_message
 )
+from app.services.ai_service import generate_ai_response
 from app.database import db
 
 
@@ -38,9 +39,18 @@ def whatsapp_webhook():
             message_text=message_text
         )
 
+        ai_response = generate_ai_response(message_text)
+
+        save_message(
+            conversation_id=conversation.id,
+            sender="ai",
+            message_text=ai_response
+        )
+
         return jsonify({
-            "status": "received",
-            "message": "Message saved successfully"
+            "status": "success",
+            "message": "Message processed successfully",
+            "ai_response": ai_response
         }), 200
 
     except Exception:
